@@ -105,10 +105,6 @@ class Person:
     def print_person(self):
         print(self.first_name)
 
-    # @classmethod
-    # def print_person(cls):
-    #    pass
-
 
 @dataclass
 class People:
