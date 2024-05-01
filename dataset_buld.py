@@ -49,7 +49,7 @@ LAST_NAME_LIST = [
     "Johnson",
     "MacDonald",
 ]
-COLLECTION_SIZE = 100000
+COLLECTION_SIZE = 1000000
 COLLECTION_FILE_NAME = "testData.json"
 
 

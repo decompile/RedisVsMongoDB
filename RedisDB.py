@@ -13,9 +13,9 @@ DEFAULT_REDIS_CONNECTION = "192.168.230.135"
 DEFAULT_REDIS_PORT = "6379"
 KEY_PREFIX = "person:"
 IDX_NAME = "personIDX"
-COLLECTION_SIZE = 100000
+COLLECTION_SIZE = 1000000
 COLLECTION_FILE_NAME = "testData.json"
-NUM_OF_QUERIES = 100000
+NUM_OF_QUERIES = 1000000
 
 FIRST_NAME_LIST = [
     "James",
@@ -93,13 +93,13 @@ def main():
 
         redis_index = client.ft(IDX_NAME)
         start_time = time.time()
-        # Curently get all full entries since I didnt find how to recieve the inner child age only.
-        found = client.ft(IDX_NAME).search(f"{random.choice(FIRST_NAME_LIST)}")
-
-        age = 0
-        # Not implemented for Redis Yet
-        # for x in found.docs:
-        #    age = x.get("age") + age
+        for i in range(0, NUM_OF_QUERIES):
+            # Curently get all full entries since I didnt find how to recieve the inner child age only.
+            found = client.ft(IDX_NAME).search(f"{random.choice(FIRST_NAME_LIST)}")
+            age = 0
+            # Not implemented for Redis Yet
+            # for x in found.docs:
+            #    age = x.get("age") + age
         end_time = time.time()
         total_time = end_time - start_time
         print(f"Sent {NUM_OF_QUERIES} Queries in {total_time} seconds")

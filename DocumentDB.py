@@ -8,9 +8,9 @@ import random
 DEFAULT_MONGO_CONNECTION = "192.168.230.130"
 MONGO_DBNAME = "testDatabase"
 MONGO_COLLECTION_NAME = "testCollection"
-COLLECTION_SIZE = 100000
+COLLECTION_SIZE = 10000
 COLLECTION_FILE_NAME = "testData.json"
-NUM_OF_QUERIES = 100000
+NUM_OF_QUERIES = 10000
 
 FIRST_NAME_LIST = [
     "James",
@@ -71,10 +71,11 @@ def main():
 
         mongo_query = {"children.firstName": random.choice(FIRST_NAME_LIST)}
         start_time = time.time()
-        found = collection.find(mongo_query)
-        age = 0
-        for x in found:
-            age = x.get("age") + age
+        for i in range(0, NUM_OF_QUERIES):
+            found = collection.find(mongo_query)
+            age = 0
+            for x in found:
+                age = x.get("age") + age
         client.close()
         end_time = time.time()
         total_time = end_time - start_time
