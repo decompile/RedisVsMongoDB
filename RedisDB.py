@@ -15,7 +15,8 @@ KEY_PREFIX = "person:"
 IDX_NAME = "personIDX"
 COLLECTION_SIZE = 1000000
 COLLECTION_FILE_NAME = "testData.json"
-NUM_OF_QUERIES = 1000000
+NUM_OF_QUERIES = 50000
+RESULTS_PER_QUERY = 100
 
 FIRST_NAME_LIST = [
     "James",
@@ -70,17 +71,8 @@ def main():
             client.ft(f"{IDX_NAME}").create_index(
                 schema, definition=IndexDefinition(index_type=IndexType.JSON)
             )
-        #            client.ft(f"{IDX_NAME}").create_index(
-        #                fields=(TextField("$.children[0:].firstName", as_name="firstName")),
-        #                definition=IndexDefinition(IndexType=IndexType.JSON),
-        #            )
         except:
             print("Index already exists")
-
-        # Create the database and collection
-        #        db = client[MONGO_DBNAME]
-        #        collection = db[MONGO_COLLECTION_NAME]
-        #        collection.create_index([("children.firstName", pymongo.ASCENDING)])
 
         start_time = time.time()
         for i in range(0, COLLECTION_SIZE):
@@ -93,13 +85,9 @@ def main():
 
         redis_index = client.ft(IDX_NAME)
         start_time = time.time()
+        q = Query(f"{random.choice(FIRST_NAME_LIST)}").paging(0, 100)
         for i in range(0, NUM_OF_QUERIES):
-            # Curently get all full entries since I didnt find how to recieve the inner child age only.
-            found = client.ft(IDX_NAME).search(f"{random.choice(FIRST_NAME_LIST)}")
-            age = 0
-            # Not implemented for Redis Yet
-            # for x in found.docs:
-            #    age = x.get("age") + age
+            found = redis_index.search(q)
         end_time = time.time()
         total_time = end_time - start_time
         print(f"Sent {NUM_OF_QUERIES} Queries in {total_time} seconds")
